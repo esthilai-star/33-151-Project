@@ -1,0 +1,128 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "5e69d8c0-2914-4210-986b-2b2b26d2c832",
+   "metadata": {},
+   "source": [
+    "# This is A1: Particles w/ Velocity and a Large Sphere"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "6ba8fa44-34fe-4341-8251-1593723bd0e1",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/opt/anaconda3/envs/vPythonEnv/lib/python3.10/site-packages/vpython/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.\n",
+      "  from pkg_resources import get_distribution, DistributionNotFound\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div id=\"glowscript\" class=\"glowscript\"></div>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.HTML object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "application/javascript": [
+       "if (typeof Jupyter !== \"undefined\") { window.__context = { glowscript_container: $(\"#glowscript\").removeAttr(\"id\")};}else{ element.textContent = ' ';}"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Javascript object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "from vpython import *\n",
+    "from math import *"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "8bfa8c65-7d8c-4baa-81dd-4c4c795a35c7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "WallL = box(pos=vector(-10,0,0),size=vector(.2,20,5),color=color.red)\n",
+    "WallR = box(pos=vector(10,0,0),size=vector(.2,20,5),color=color.red)\n",
+    "Wall_top = box(pos=vector(0,10,0),size=vector(20,.2,5),color=color.red)\n",
+    "Wall_bottom = box(pos=vector(0,-10,0),size=vector(20,.2,5),color=color.red)\n",
+    "#\n",
+    "MOF = sphere(pos=vector(0,0,0),radius=1,color=color.red)\n",
+    "C1 = sphere(pos=vector(5,2,0),radius=.25,color=color.cyan)\n",
+    "C2 = sphere(pos=vector(3,-5,0),radius=.25,color=color.cyan)\n",
+    "C3 = sphere(pos=vector(-5,0,0),radius=.25,color=color.cyan)\n",
+    "C4 = sphere(pos=vector(-1,-5,0),radius=.25,color=color.cyan)\n",
+    "C5 = sphere(pos=vector(8,7,0),radius=.25,color=color.cyan)\n",
+    "C6 = sphere(pos=vector(0,8,0),radius=.25,color=color.cyan)\n",
+    "#\n",
+    "C1.velocity = vector(1,0.1,0)\n",
+    "#\n",
+    "t = 0\n",
+    "dt = 0.1\n",
+    "#\n",
+    "while t<1000:\n",
+    "    rate(100)\n",
+    "    if C1.visible:\n",
+    "        C1.pos = C1.pos + C1.velocity*dt\n",
+    "    if C1.pos.x < WallL.pos.x:\n",
+    "        C1.velocity.x = -C1.velocity.x\n",
+    "    if C1.pos.x > WallR.pos.x:\n",
+    "        C1.velocity.x = -C1.velocity.x\n",
+    "    if C1.pos.y > Wall_top.pos.y:\n",
+    "        C1.velocity.y = -C1.velocity.y\n",
+    "    if C1.pos.y < Wall_bottom.pos.y:\n",
+    "        C1.velocity.y = -C1.velocity.y\n",
+    "    if C1.pos.y < MOF.pos.y:\n",
+    "        C1.visible = False\n",
+    "#\n",
+    "    t = t+dt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c4a30905-c3d1-41b6-9abd-7bb0f55f3c9a",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python (vPythonEnv)",
+   "language": "python",
+   "name": "vpythonenv"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.21"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
