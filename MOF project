@@ -1,0 +1,70 @@
+WallL = box(pos=vector(-10,0,0),size=vector(.2,20,5),color=color.red)
+WallR = box(pos=vector(10,0,0),size=vector(.2,20,5),color=color.red)
+Wall_top = box(pos=vector(0,10,0),size=vector(20,.2,5),color=color.red)
+Wall_bottom = box(pos=vector(0,-10,0),size=vector(20,.2,5),color=color.red)
+#
+n = []
+num_died = []
+n_particles = 70
+for i in range(n_particles):
+    x = random.randint(-9, 9)
+    y = random.randint(-9, 9)
+    vx = random.randint(-3,3)
+    vy = random.randint(-3,3)
+    carbon = sphere(pos=vector(x,y,0),color=color.cyan,radius=0.25)
+    carbon.velocity = vector(vx,vy,0)
+    n.append(carbon)
+#
+MOF = sphere(pos=vector(0,0,0),radius=1,color=color.red)
+#
+MOF.velocity = vector(0.05,0.02,0)
+#
+timeplot = graph(title='Time to Death',xtitle='Time',ytitle='Number Died',xmin=0,
+                   xmax=1000, ymin=0,ymax=100)
+#
+drawTimeDeath = gcurve(color=color.red,label='Time')
+#
+dead = 0
+total_dead = sum(item.radius == 0 for item in n)
+#
+t = 0
+dt = 0.1
+#
+while t<200:
+    rate(100)
+    for item in n: 
+        if item.visible:
+            item.pos = item.pos + item.velocity*dt
+        if item.pos.x <= WallL.pos.x:
+            item.velocity.x = -item.velocity.x
+        if item.pos.x >= WallR.pos.x:
+            item.velocity.x = -item.velocity.x
+        if item.pos.y >= Wall_top.pos.y:
+            item.velocity.y = -item.velocity.y
+        if item.pos.y <= Wall_bottom.pos.y:
+            item.velocity.y = -item.velocity.y
+        if mag(item.pos - MOF.pos) <= item.radius + MOF.radius:
+            item.visible = False
+#
+        if MOF.visible:
+            MOF.pos = MOF.pos + MOF.velocity*dt
+        if MOF.pos.x <= WallL.pos.x:
+            MOF.velocity.x = -MOF.velocity.x
+        if MOF.pos.x >= WallR.pos.x:
+            MOF.velocity.x = -MOF.velocity.x
+        if MOF.pos.y >= Wall_top.pos.y:
+            MOF.velocity.y = -MOF.velocity.y
+        if MOF.pos.y <= Wall_bottom.pos.y:
+            MOF.velocity.y = -MOF.velocity.y
+#
+    for item in n:
+        if item.visible == False:
+            item.radius = dead
+        if sum(item.radius == 0 for item in n) == 60:
+            print('Time of Death',t,'seconds')
+#
+    
+    num_died.append(sum(item.radius == 0 for item in n))
+    drawTimeDeath.plot(pos=(t,sum(item.radius == 0 for item in n)))
+    t = t+dt
+#
